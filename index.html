@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Library</title>
+  </head>  
+</body>
+</html>
+
+  <body>
+    <button class="newBook">New Book</button>
+    <form name="myForm" action="" method="post" class="myForm">
+      <div>
+        <label for="author">Author</label>
+        <input type="text" name="author" id="author" required />
+      </div>
+      <div>
+        <label for="title">Title</label>
+        <input type="text" name="title" id="title" required />
+      </div>
+      <div>
+        <label for="numberP">Number of pages</label>
+        <input
+          type="number" 
+          id="numberP"
+          name="number"
+          title="Please enter a number between 1 and 10,000"
+          min="1"
+          max="10000"
+          required
+        />
+      </div>
+      <div>
+        <label for="reader">Reader?</label>
+        <input type="checkbox" name="reader" id="reader" />
+      </div>
+      <div>
+        <button type="submit" id="btnSubmit">submit</button>
+      </div>
+    </form>
+    <table id = "myTable">
+      <caption>This is an elegant Library :-)</caption>
+      <div>   
+      <tr>
+        <th>Author</th>
+        <th>Title</th>
+        <th>Number</th>
+        <th>Delete</th>
+        <th>Reader?</th>
+      </tr>
+      </div>
+    </table>
+
+    <script src="js.js"></script>
+  </body>
+</html>
+
