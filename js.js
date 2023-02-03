@@ -1,3 +1,63 @@
+class Book {
+  constructor(title, author, numberP, reader) {
+    this.title = title;
+    this.author = author;
+    this.numberP = numberP;
+    this.reader = reader;
+  }
+  print() {
+    console.log(`hello ${this.author}`);
+  }
+}
+
+class Library {
+  constructor() {}
+  init() {
+    this.library = [];
+  }
+  cacheDOM() {
+    this.btn = document.getElementById("btnSubmit");
+    this.author = document.getElementById("author");
+    this.title = document.getElementById("title");
+    this.numberP = document.getElementById("numberP");
+    this.reader = document.getElementById("reader");
+  }
+  bindEvents() {
+    this.btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      this.library.push(
+        new Book(
+          this.author.value,
+          this.title.value,
+          this.numberP.value,
+          this.reader.checked
+        )
+      );
+      document.getElementById("author").value = "";
+      document.getElementById("title").value = "";
+      document.getElementById("numberP").value = "";
+      document.getElementById("reader").checked = false;
+    });
+  }
+
+  deleteBook() {}
+  render() {}
+}
+
+const myLibrary = new Library();
+myLibrary.init();
+myLibrary.cacheDOM();
+myLibrary.bindEvents();
+
+/*
+  if (myLibrary.length !== 0) {
+    clearTable();
+  }
+  addBookToLibrary(new Book(author, title, numberP, reader));
+  printLibrary();
+});*/
+
+/*
 let myLibrary = [];
 let LibraryTemp = [];
 let show = false;
@@ -88,3 +148,4 @@ function clearTable() {
     myTable.deleteRow(1);
   }
 }
+*/
