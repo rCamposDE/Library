@@ -1,3 +1,7 @@
+// the form, don´t send data incomplete
+// the class call itself
+// put more format with tailwind
+
 class Book {
   constructor(title, author, numberP, reader) {
     this.title = title;
@@ -5,17 +9,19 @@ class Book {
     this.numberP = numberP;
     this.reader = reader;
   }
-  print() {
-    console.log(`hello ${this.author}`);
-  }
 }
 
 class Library {
   constructor() {}
   init() {
-    this.library = [];
+    this.library = [
+      new Book("cañitas", "carlos t", 120, true),
+      new Book("Don quijote", "MSS", 2, false),
+    ];
+    this.showForm = false;
   }
   cacheDOM() {
+    this.btnNB = document.getElementById("newBook");
     this.btn = document.getElementById("btnSubmit");
     this.author = document.getElementById("author");
     this.title = document.getElementById("title");
@@ -25,127 +31,92 @@ class Library {
   bindEvents() {
     this.btn.addEventListener("click", (e) => {
       e.preventDefault();
-      this.library.push(
-        new Book(
-          this.author.value,
-          this.title.value,
-          this.numberP.value,
-          this.reader.checked
-        )
-      );
-      document.getElementById("author").value = "";
-      document.getElementById("title").value = "";
-      document.getElementById("numberP").value = "";
-      document.getElementById("reader").checked = false;
+      if (
+        //This does n´t work as it expect
+        this.author.value.length > 3 &&
+        this.title.value.length > 3 &&
+        this.numberP.value > 0
+      ) {
+        this.library.push(
+          new Book(
+            this.author.value,
+            this.title.value,
+            this.numberP.value,
+            this.reader.checked
+          )
+        );
+        document.getElementById("author").value = "";
+        document.getElementById("title").value = "";
+        document.getElementById("numberP").value = "";
+        document.getElementById("reader").checked = false;
+        this.render();
+      }
+    });
+
+    this.btnNB.addEventListener("click", () => {
+      if (this.showForm === false) {
+        document.getElementById("hideShow").style.display = "flex";
+        this.showForm = true;
+      } else {
+        document.getElementById("hideShow").style.display = "none";
+        this.showForm = false;
+      }
     });
   }
 
-  deleteBook() {}
-  render() {}
+  render() {
+    document.getElementById("myCards").textContent = "";
+
+    const contain = document.createElement("div");
+    contain.id = "formContainer";
+
+    this.library.forEach((X) => {
+      const card = document.createElement("div");
+      card.className = "myForm";
+      const authorD = document.createElement("p");
+      const titleD = document.createElement("p");
+      const numberPD = document.createElement("p");
+      var checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      const close = document.createElement("div");
+      close.textContent = "X";
+      close.className = "close";
+
+      authorD.textContent = X.author;
+      titleD.textContent = X.title;
+      numberPD.textContent = X.numberP;
+      checkbox.checked = X.reader;
+
+      authorD.style.width = "10rem";
+      titleD.style.width = "10rem";
+      numberPD.style.width = "5rem";
+
+      card.appendChild(authorD);
+      card.appendChild(titleD);
+      card.appendChild(numberPD);
+      card.appendChild(checkbox);
+      card.appendChild(close);
+      contain.appendChild(card);
+      myCards.appendChild(contain);
+      close.addEventListener("click", () => {
+        //this is to delete
+        this.deleteBook(X.title);
+        this.render();
+      });
+      checkbox.addEventListener("click", () => {
+        //this is to switch
+        X.reader = !X.reader;
+      });
+    });
+  }
+
+  deleteBook(authorToDelete) {
+    this.library = this.library.filter((book) => book.title !== authorToDelete);
+  }
 }
 
 const myLibrary = new Library();
 myLibrary.init();
 myLibrary.cacheDOM();
 myLibrary.bindEvents();
-
-/*
-  if (myLibrary.length !== 0) {
-    clearTable();
-  }
-  addBookToLibrary(new Book(author, title, numberP, reader));
-  printLibrary();
-});*/
-
-/*
-let myLibrary = [];
-let LibraryTemp = [];
-let show = false;
-
-let btnSH = document.querySelector(".newBook");
-let form = document.querySelector(".myForm");
-btnSH.addEventListener("click", function () {
-  if (show === false) {
-    form.style.display = "flex";
-  } else {
-    form.style.display = "none";
-  }
-  show = !show;
-});
-
-function Book(author, title, pagesP, reader) {
-  this.title = title;
-  this.author = author;
-  this.numberP = pagesP;
-  this.reader = reader;
-}
-function addBookToLibrary(book) {
-  myLibrary.push(book);
-}
-
-let btn = document.querySelector("#btnSubmit");
-btn.addEventListener("click", (e) => {
-  e.preventDefault();
-  let author = document.querySelector("#author").value;
-  let title = document.querySelector("#title").value;
-  let numberP = document.querySelector("#numberP").value;
-  let reader = document.querySelector("#reader").checked;
-  document.querySelector("#author").value = "";
-  document.querySelector("#title").value = "";
-  document.querySelector("#numberP").value = "";
-  document.querySelector("#reader").checked = false;
-
-  if (myLibrary.length !== 0) {
-    clearTable();
-  }
-  addBookToLibrary(new Book(author, title, numberP, reader));
-  printLibrary();
-});
-
-function printLibrary() {
-  i = 0;
-  myLibrary.forEach((element) => {
-    let ck = "";
-    let row = myTable.insertRow();
-    let cell1 = row.insertCell();
-    let cell2 = row.insertCell();
-    let cell3 = row.insertCell();
-    let cell4 = row.insertCell();
-    let cell5 = row.insertCell();
-    cell1.innerHTML = element.author;
-    cell2.innerHTML = element.title;
-    cell3.innerHTML = element.numberP;
-    i++;
-    cell4.innerHTML =
-      "<button class='close' onclick='eliminate(" + i + ")' > X </button>";
-    if (element.reader == true) {
-      ck = "checked";
-    }
-    cell5.innerHTML =
-      "<input type='checkbox' onclick='turn(" + i + ")' " + ck + ">";
-  });
-}
-
-function turn(x) {
-  clearTable();
-  myLibrary[x - 1].reader = !myLibrary[x - 1].reader;
-  printLibrary();
-}
-
-function eliminate(x) {
-  clearTable();
-  LibraryTemp = [];
-  for (let y = 0; y < myLibrary.length; y++) {
-    if (y !== x - 1) LibraryTemp.push(myLibrary[y]);
-  }
-  myLibrary = LibraryTemp;
-  printLibrary();
-}
-
-let myTable = document.querySelector("#myTable");
-function clearTable() {
-  for (var i = 0; i < myLibrary.length; i++) {
-    myTable.deleteRow(1);
-  }
-}
-*/
+myLibrary.render();

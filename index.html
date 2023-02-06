@@ -12,19 +12,20 @@
 </html>
 
   <body>
-    <button class="newBook">New Book</button>
-    <div id="formContainer">
-    <form  class="myForm">
-        <input type="text" name = "author" id="author" minlength="4" maxlength="200" size="20"  
+    <button id="newBook">New Book</button>
+    <div id="hideShow">
+    <div id="formContainer" >
+      <form  class="myForm">
+        <input type="text" name = "author" id="author" minlength="4" maxlength="200"  
         placeholder = "Name" title="Enter your name please" required > 
     
-        <input type="text" name="title" id="title" minlength="4" maxlength="200" size="20"
+        <input type="text" name="title" id="title" minlength="4" maxlength="200" 
         placeholder = "Title" title="Enter the title" required > 
       
         <input
           type="number"
           id="numberP"
-          name="number"
+          name="numberP"
           title="Please enter a number between 1 and 10,000"
           placeholder = "Pages"
           min="1"
@@ -35,10 +36,11 @@
         <label for="reader">Read?</label>
         <input type="checkbox" name="reader" id="reader" />
       </div>
-      
         <button type="submit" id="btnSubmit">submit</button>
-    </form>
+      </form>
     </div>
+    </div>
+    <br>
 
     <div id = "myCards">
       
