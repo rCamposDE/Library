@@ -1,6 +1,7 @@
-// the form, don´t send data incomplete
+// the form, corregido con el AddEventListener con el EventPrevent
+// the modal https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog
+
 // the class call itself
-// put more format with tailwind
 
 class Book {
   constructor(title, author, numberP, reader) {
@@ -22,21 +23,18 @@ class Library {
   }
   cacheDOM() {
     this.btnNB = document.getElementById("newBook");
-    this.btn = document.getElementById("btnSubmit");
+    this.form = document.getElementById("my-form");
     this.author = document.getElementById("author");
     this.title = document.getElementById("title");
     this.numberP = document.getElementById("numberP");
     this.reader = document.getElementById("reader");
+    this.formDialog = document.getElementById("formDialog");
   }
   bindEvents() {
-    this.btn.addEventListener("click", (e) => {
+    this.form.addEventListener('submit', (e) => {
       e.preventDefault();
-      if (
-        //This does n´t work as it expect
-        this.author.value.length > 3 &&
-        this.title.value.length > 3 &&
-        this.numberP.value > 0
-      ) {
+      this.formDialog.close();
+
         this.library.push(
           new Book(
             this.author.value,
@@ -50,29 +48,21 @@ class Library {
         document.getElementById("numberP").value = "";
         document.getElementById("reader").checked = false;
         this.render();
-      }
+      
     });
 
     this.btnNB.addEventListener("click", () => {
-      if (this.showForm === false) {
-        document.getElementById("hideShow").style.display = "flex";
-        this.showForm = true;
-      } else {
-        document.getElementById("hideShow").style.display = "none";
-        this.showForm = false;
-      }
+      this.formDialog.showModal();
     });
   }
 
   render() {
+    const myCards = document.getElementById("myCards");
     document.getElementById("myCards").textContent = "";
-
-    const contain = document.createElement("div");
-    contain.id = "formContainer";
 
     this.library.forEach((X) => {
       const card = document.createElement("div");
-      card.className = "myForm";
+      card.className = "card";
       const authorD = document.createElement("p");
       const titleD = document.createElement("p");
       const numberPD = document.createElement("p");
@@ -87,17 +77,16 @@ class Library {
       numberPD.textContent = X.numberP;
       checkbox.checked = X.reader;
 
-      authorD.style.width = "10rem";
+/*       authorD.style.width = "10rem";
       titleD.style.width = "10rem";
-      numberPD.style.width = "5rem";
+      numberPD.style.width = "5rem"; */
 
       card.appendChild(authorD);
       card.appendChild(titleD);
       card.appendChild(numberPD);
       card.appendChild(checkbox);
       card.appendChild(close);
-      contain.appendChild(card);
-      myCards.appendChild(contain);
+      myCards.appendChild(card);
       close.addEventListener("click", () => {
         //this is to delete
         this.deleteBook(X.title);
@@ -120,3 +109,5 @@ myLibrary.init();
 myLibrary.cacheDOM();
 myLibrary.bindEvents();
 myLibrary.render();
+
+
